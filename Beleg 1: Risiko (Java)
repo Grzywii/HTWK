@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
         int userSelected;
         do {
+            //Verknüpfung zu Startmenü
             userSelected = MenuData();
             switch (userSelected) {
                 case 1:
@@ -13,14 +14,16 @@ public class Main {
                     System.out.println("Tippe 'los' ein, um Würfel zu werfen:");
                     Scanner scanner = new Scanner(System.in);
                     String input = scanner.nextLine();
-
+                        //Es wird gelesen, ob man den Befehl korrekt eingegeben hat
                         if (input.equals("los")) {
+                            //Die 3 Randomzahlen vom Angreifer werden ausgespuckt
                             System.out.print("Gezogene Zahl vom Angreifer: ");
                             for (int i = 0; i < 3; i++) {
                                 Random random = new Random();
                                 int randomNumberAttack = random.nextInt(6)+1;
                                 System.out.print(randomNumberAttack + " ");
                             }
+                            //Die 3 Randomzahlen vom Verteidiger werden ausgespuckt
                             System.out.print("\nGezogene Zahl vom Verteidiger: ");
                             for (int i = 0; i < 3; i++) {
                                 Random random = new Random();
@@ -39,6 +42,7 @@ public class Main {
                     System.out.println("Falsche Wahl! Probiere nochmal.");
                     break;
             }
+        //Diese Bedingung muss hier eingegeben werden, sonst wird eine endlose Schleife laufen
         } while (userSelected > 1);
     }
     //Startmenü
