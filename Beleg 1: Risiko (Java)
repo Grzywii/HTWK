@@ -1,0 +1,58 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        int userSelected;
+        do {
+            userSelected = MenuData();
+            switch (userSelected) {
+                case 1:
+                    System.out.println("Das Spiel hat begonnen!");
+                    System.out.println("*-----------------------------------*");
+                    System.out.println("Tippe 'los' ein, um Würfel zu werfen:");
+                    Scanner scanner = new Scanner(System.in);
+                    String input = scanner.nextLine();
+
+                        if (input.equals("los")) {
+                            System.out.print("Gezogene Zahl vom Angreifer: ");
+                            for (int i = 0; i < 3; i++) {
+                                Random random = new Random();
+                                int randomNumberAttack = random.nextInt(6)+1;
+                                System.out.print(randomNumberAttack + " ");
+                            }
+                            System.out.print("\nGezogene Zahl vom Verteidiger: ");
+                            for (int i = 0; i < 3; i++) {
+                                Random random = new Random();
+                                int randomNumberDefend = random.nextInt(6)+1;
+                                System.out.print(randomNumberDefend + " ");
+                            }
+                        }
+                        else {
+                            System.out.println("Falscher Befehl!");
+                        }
+                    break;
+                case 0:
+                    System.out.println("Game Over...");
+                    break;
+                default:
+                    System.out.println("Falsche Wahl! Probiere nochmal.");
+                    break;
+            }
+        } while (userSelected > 1);
+    }
+    //Startmenü
+    public static int MenuData() {
+        Scanner scanner = new Scanner(System.in);
+        int option;
+        System.out.println("*-------------------*");
+        System.out.println("MENU:");
+        System.out.println("1. Fang das Game an");
+        System.out.println("0. Aufhören");
+        System.out.println("*-------------------*");
+
+        System.out.print("Wähle die Option aus: ");
+        option = scanner.nextInt();
+        return option;
+    }
+}
