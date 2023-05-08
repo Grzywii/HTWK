@@ -1,69 +1,17 @@
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.Comparator;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        int userSelected;
         do {
-            //Verknüpfung zu Startmenü
-            userSelected = MenuData();
-            switch (userSelected) {
-                case 1:
-                    System.out.println("Das Spiel hat begonnen!");
-                    System.out.println("*-----------------------------------*");
-                    System.out.println("Tippe 'los' ein, um Würfel zu werfen:");
+            int PlayTheGame = PlayTheGame();
 
-                    //Deklaration und Definierung
-                    int[] arrayAngreifer = generateRandomArray();
-                    int[] arrayVerteidiger = generateRandomArray();
-
-                    //Sortierung von Arrays
-                    Arrays.sort(arrayAngreifer);
-                    Arrays.sort(arrayVerteidiger);
-                    Random random = new Random();
-
-                    Scanner scanner = new Scanner(System.in);
-                    String input = scanner.nextLine();
-                        //Es wird gelesen, ob man den Befehl korrekt eingegeben hat
-                        if (input.equals("los")) {
-                            System.out.println("*-----------------------------------*");
-
-                            //Die 3 Randomzahlen vom Angreifer werden ausgespuckt
-                            System.out.print("Gezogene Zahl vom Angreifer: ");
-                            System.out.println(Arrays.toString(arrayAngreifer));
-
-                            //Die 3 Randomzahlen vom Verteidiger werden ausgespuckt
-                            System.out.print("Gezogene Zahl vom Verteidiger: ");
-                            System.out.println(Arrays.toString(arrayVerteidiger));
-
-                            for (int i = 0; i < arrayAngreifer.length; i++) {
-                                //%d gibt an, dass die Variable decimal-integer ist
-                                System.out.printf("Runde %d: ", i+1);
-                                Thread.sleep(2000);
-                                if (arrayAngreifer[i] > arrayVerteidiger[i]) {
-                                    System.out.println("Angreifer hat gewonnen!");
-                                } else if (arrayAngreifer[i] < arrayVerteidiger[i]) {
-                                    System.out.println("Verteidiger hat gewonnen!");
-                                } else {
-                                    System.out.println("Gleichstand");
-                                }
-                            }
-                        }
-                        else {
-                            System.out.println("Falscher Befehl!");
-                        }
-                    break;
-                case 0:
-                    System.out.println("Game Over...");
-                    break;
-                default:
-                    System.out.println("Falsche Wahl! Probiere nochmal.");
-                    break;
-            }
         //Diese Bedingung muss hier eingegeben werden, sonst wird eine endlose Schleife laufen
-        } while (userSelected > 1);
+        } while (PlayTheGame() != 0);
     }
+
     //Startmenü
     public static int MenuData() {
         Scanner scanner = new Scanner(System.in);
@@ -79,12 +27,89 @@ public class Main {
     }
 
     //Randomzahlen generieren
-    private static int[] generateRandomArray() {
-        int[] array = new int[3];
+    private static int[] GenerateRandomArray() {
+        Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        for (int i = 0; i < array.length; i++) {
-            array[i] = random.nextInt(6) + 1;
+        int size = scanner.nextInt();
+        int[] table = new int[size];
+        for (int i = 0; i < table.length; i++) {
+            table[i] = random.nextInt(6) + 1;
         }
-        return array;
+        return table;
+    }
+
+    public static int PlayTheGame() throws InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        int userSelected;
+        //Verknüpfung zu Startmenü
+        userSelected = MenuData();
+        switch (userSelected) {
+            case 1:
+                System.out.println("Das Spiel hat begonnen!");
+                System.out.println("*-----------------------------------*");
+
+                //Deklaration und Definierung
+                System.out.print("(Angreifer) Tippe die Anzahl der Steine ein: ");
+                int[] arrayAngreifer = GenerateRandomArray();
+
+                System.out.print("(Verteidiger) Tippe die Anzahl der Steine ein: ");
+                int[] arrayVerteidiger = GenerateRandomArray();
+
+                //Sortierung von Arrays
+                Arrays.sort(arrayAngreifer);
+                Arrays.sort(arrayVerteidiger);
+                System.out.println("Tippe 'los' ein, um Würfel zu werfen:");
+
+                String input = scanner.nextLine();
+                if (!input.equals("los")) {
+                    System.out.println("Falscher Befehl! Probiere es nochmal!");
+                    Thread.sleep(1000);
+                    System.out.println("Tippe 'los' ein, um Würfel zu werfen:");
+                    input = scanner.nextLine();
+                }
+                //Es wird gelesen, ob man den Befehl korrekt eingegeben hat
+                if (input.equals("los")) {
+                    System.out.println("*-----------------------------------*");
+
+                    //Die 3 Randomzahlen vom Angreifer werden ausgespuckt
+                    Thread.sleep(500);
+                    System.out.print("Gezogene Zahl vom Angreifer: ");
+                    System.out.println(Arrays.toString(arrayAngreifer));
+
+                    //Die 3 Randomzahlen vom Verteidiger werden ausgespuckt
+                    Thread.sleep(1300);
+                    System.out.print("Gezogene Zahl vom Verteidiger: ");
+                    System.out.println(Arrays.toString(arrayVerteidiger));
+
+                    for (int i = 0; i < arrayAngreifer.length; i++) {
+                        //%d gibt an, dass die Variable decimal-integer ist
+                        System.out.printf("Runde %d: ", i+1);
+                        Thread.sleep(500);1
+                        if (arrayAngreifer[i] > arrayVerteidiger[i]) {
+                            System.out.println("Angreifer hat gewonnen!");
+                        } else if (arrayAngreifer[i] < arrayVerteidiger[i]) {
+                            System.out.println("Verteidiger hat gewonnen!");
+                        } else {
+                            System.out.println("Gleichstand");
+                        }
+                    }
+
+                    //Spieler entscheidet, ob er weiterspielen möchte oder aufhören
+                    Thread.sleep(1000);
+                    System.out.println("Was möchtest du nun tun?");
+                    userSelected = PlayTheGame();
+                }
+                else {
+                    System.out.println("Anscheinend heute wird es nicht funktionieren ;(");
+                }
+                break;
+            case 0:
+                System.out.println("Game Over...");
+                break;
+            default:
+                System.out.println("Falsche Wahl! Probiere nochmal.");
+                break;
+        }
+        return userSelected;
     }
 }
