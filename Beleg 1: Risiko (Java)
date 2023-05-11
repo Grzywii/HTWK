@@ -1,15 +1,16 @@
+//By Grzywii
+//11.05.2023 Leipzig
+
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Random;
-import java.util.Comparator;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        do {
-            int PlayTheGame = PlayTheGame();
-
         //Diese Bedingung muss hier eingegeben werden, sonst wird eine endlose Schleife laufen
-        } while (PlayTheGame() != 0);
+        while (PlayTheGame() != 0) {
+            int PlayTheGame = PlayTheGame();
+        }
     }
 
     //Startmenü
@@ -31,6 +32,11 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         int size = scanner.nextInt();
+        while (size > 3) {
+            System.out.println("Anzahl der Würfel darf nicht größer als 3 sein!");
+            System.out.print("Tippe nochmal die Anzahl der Steine ein: ");
+            size = scanner.nextInt();
+        }
         int[] table = new int[size];
         for (int i = 0; i < table.length; i++) {
             table[i] = random.nextInt(6) + 1;
@@ -71,27 +77,58 @@ public class Main {
                 if (input.equals("los")) {
                     System.out.println("*-----------------------------------*");
 
-                    //Die 3 Randomzahlen vom Angreifer werden ausgespuckt
+                    //Anzahl der Gewinne in einer Runde
+                    int scoreA = 0;
+                    int scoreV = 0;
+
+                    //Die Randomzahlen vom Angreifer werden ausgespuckt
                     Thread.sleep(500);
                     System.out.print("Gezogene Zahl vom Angreifer: ");
                     System.out.println(Arrays.toString(arrayAngreifer));
 
-                    //Die 3 Randomzahlen vom Verteidiger werden ausgespuckt
+                    //Die Randomzahlen vom Verteidiger werden ausgespuckt
                     Thread.sleep(1300);
                     System.out.print("Gezogene Zahl vom Verteidiger: ");
                     System.out.println(Arrays.toString(arrayVerteidiger));
 
-                    for (int i = 0; i < arrayAngreifer.length; i++) {
+                    for (int i = 0; i < Math.min(arrayAngreifer.length, arrayVerteidiger.length); i++) {
                         //%d gibt an, dass die Variable decimal-integer ist
                         System.out.printf("Runde %d: ", i+1);
-                        Thread.sleep(500);1
+                        Thread.sleep(500);
+
                         if (arrayAngreifer[i] > arrayVerteidiger[i]) {
                             System.out.println("Angreifer hat gewonnen!");
+                            scoreA++;
                         } else if (arrayAngreifer[i] < arrayVerteidiger[i]) {
                             System.out.println("Verteidiger hat gewonnen!");
+                            scoreV++;
                         } else {
                             System.out.println("Gleichstand");
                         }
+                    }
+
+                    if (arrayAngreifer.length > arrayVerteidiger.length) {
+                        scoreA++;
+                    } else if (arrayVerteidiger.length > arrayAngreifer.length) {
+                        scoreV++;
+                    }
+
+                    //Zusammenfassung
+                    Thread.sleep(1000);
+                    System.out.println("*---------------------------------------*");
+                    System.out.println("Zusammenfassung: ");
+                    System.out.println("Angreifer: " + scoreA + "Punkte.");
+                    System.out.println("Verteidiger: " + scoreV + "Punkte.");
+                    if (scoreA > scoreV) {
+                        System.out.println("ANGREIFER HAT GEWONNEN!");
+                    }
+                    else if (scoreA < scoreV) {
+                        System.out.println("VERTEIDIGER HAT GEWONNEN!");
+                        System.out.println("*-----------------------------------*");
+                    }
+                    else {
+                        System.out.println("GLEICHSTAND! NIEMAND HAT GEWONNEN");
+                        System.out.println("*-----------------------------------*");
                     }
 
                     //Spieler entscheidet, ob er weiterspielen möchte oder aufhören
